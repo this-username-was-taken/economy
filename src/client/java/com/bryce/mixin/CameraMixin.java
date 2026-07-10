@@ -1,6 +1,6 @@
 package com.bryce.mixin;
 
-import com.bryce.client.EconomyClient;
+import com.bryce.client.IsometryCraftClient;
 import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
@@ -22,27 +22,33 @@ public abstract class CameraMixin {
     protected abstract void setPos(double x, double y, double z);
     @Inject(method = "update", at = @At("HEAD"), cancellable = true)
     private void updateIsometric(BlockView area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
-        if (!EconomyClient.isIsometric) return;
-        this.ready = true;
-        this.area = area;
-        this.focusedEntity = focusedEntity;
-        this.thirdPerson = true;
-        final float yaw = EconomyClient.cameraYaw;
-        final float pitch = 35.264F;
-        this.setRotation(yaw, pitch);
-        double x = MathHelper.lerp(tickDelta, focusedEntity.prevX, focusedEntity.getX());
-        double y = EconomyClient.isYLocked
-                ? EconomyClient.lockedYValue
-                : MathHelper.lerp(tickDelta, focusedEntity.prevY, focusedEntity.getY())
-                  + focusedEntity.getStandingEyeHeight();
-        double z = MathHelper.lerp(tickDelta, focusedEntity.prevZ, focusedEntity.getZ());
-        float yawRad = (float) Math.toRadians(-yaw);
-        float pitchRad = (float) Math.toRadians(pitch);
-        double lookX = Math.sin(yawRad) * Math.cos(pitchRad);
-        double lookY = -Math.sin(pitchRad);
-        double lookZ = Math.cos(yawRad) * Math.cos(pitchRad);
-        double distance = 20.0;
-        this.setPos(x - lookX * distance, y - lookY * distance, z - lookZ * distance);
-        ci.cancel();
+        if (!IsometryCraftClient.isIsometric) return;
+        if (area == null || focusedEntity == null) return;
+        if (Float.isNaN(tickDelta) || Float.isInfinite(tickDelta)) return;
+        try {
+            this.ready = true;
+            this.area = area;
+            this.focusedEntity = focusedEntity;
+            this.thirdPerson = true;
+            final float yaw = IsometryCraftClient.cameraYaw;
+            final float pitch = 35.264F;
+            this.setRotation(yaw, pitch);
+            double x = MathHelper.lerp(tickDelta, focusedEntity.prevX, focusedEntity.getX());
+            double y = IsometryCraftClient.isYLocked
+                    ? IsometryCraftClient.lockedYValue
+                    : MathHelper.lerp(tickDelta, focusedEntity.prevY, focusedEntity.getY())
+                      + focusedEntity.getStandingEyeHeight();
+            double z = MathHelper.lerp(tickDelta, focusedEntity.prevZ, focusedEntity.getZ());
+            float yawRad = (float) Math.toRadians(-yaw);
+            float pitchRad = (float) Math.toRadians(pitch);
+            double lookX = Math.sin(yawRad) * Math.cos(pitchRad);
+            double lookY = -Math.sin(pitchRad);
+            double lookZ = Math.cos(yawRad) * Math.cos(pitchRad);
+            double distance = 20.0;
+            this.setPos(x - lookX * distance, y - lookY * distance, z - lookZ * distance);
+            ci.cancel();
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
     }
 }

@@ -1,6 +1,6 @@
 package com.bryce.mixin;
 
-import com.bryce.client.EconomyClient;
+import com.bryce.client.IsometryCraftClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 import org.lwjgl.glfw.GLFW;
@@ -20,27 +20,27 @@ public class MouseMixin {
 
     @Inject(method = "lockCursor", at = @At("HEAD"), cancellable = true)
     private void preventCursorLock(CallbackInfo ci) {
-        if (EconomyClient.isIsometric) {
+        if (IsometryCraftClient.isIsometric) {
             GLFW.glfwSetInputMode(this.client.getWindow().getHandle(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
             ci.cancel();
         }
     }
 
     @Inject(method = "isCursorLocked", at = @At("HEAD"), cancellable = true)
-    private void economy$overrideIsCursorLocked(CallbackInfoReturnable<Boolean> cir) {
-        if (EconomyClient.isIsometric) {
+    private void isometrycraft$overrideIsCursorLocked(CallbackInfoReturnable<Boolean> cir) {
+        if (IsometryCraftClient.isIsometric) {
             cir.setReturnValue(true);
         }
     }
 
     @Inject(method = "onCursorPos", at = @At("HEAD"), cancellable = true)
     private void onMouseCursorPos(long window, double x, double y, CallbackInfo ci) {
-        if (EconomyClient.isIsometric && EconomyClient.isMiddleMouseDown && this.client.player != null) {
+        if (IsometryCraftClient.isIsometric && IsometryCraftClient.isMiddleMouseDown && this.client.player != null) {
             ci.cancel();
-            double dx = x - EconomyClient.lastMouseX;
-            double dy = y - EconomyClient.lastMouseY;
+            double dx = x - IsometryCraftClient.lastMouseX;
+            double dy = y - IsometryCraftClient.lastMouseY;
             double sensitivity = 0.05;
-            float yawRad = (float) Math.toRadians(EconomyClient.cameraYaw);
+            float yawRad = (float) Math.toRadians(IsometryCraftClient.cameraYaw);
             float cosYaw = (float) Math.cos(yawRad);
             float sinYaw = (float) Math.sin(yawRad);
             float pitchRad = (float) Math.toRadians(35.264F);
@@ -53,21 +53,21 @@ public class MouseMixin {
             double moveY = dy * (double) cosPitch * sensitivity;
             double moveZ = (dx * rightZ + dy * upZ) * sensitivity;
             double newX = client.player.getX() - moveX;
-            double newY = EconomyClient.isYLocked
-                    ? EconomyClient.lockedYValue - client.player.getStandingEyeHeight()
+            double newY = IsometryCraftClient.isYLocked
+                    ? IsometryCraftClient.lockedYValue - client.player.getStandingEyeHeight()
                     : client.player.getY() - moveY;
             double newZ = client.player.getZ() - moveZ;
             client.player.setPosition(newX, newY, newZ);
         }
-        EconomyClient.lastMouseX = x;
-        EconomyClient.lastMouseY = y;
+        IsometryCraftClient.lastMouseX = x;
+        IsometryCraftClient.lastMouseY = y;
     }
 
     @Inject(method = "onMouseScroll", at = @At("HEAD"), cancellable = true)
     private void onMouseScroll(long window, double horizontal, double vertical, CallbackInfo ci) {
-        if (EconomyClient.isIsometric && this.client.currentScreen == null) {
-            EconomyClient.isometricSize -= (float) vertical * 1.5f;
-            EconomyClient.isometricSize = Math.clamp(EconomyClient.isometricSize, 2.0f, 60.0f);
+        if (IsometryCraftClient.isIsometric && this.client.currentScreen == null) {
+            IsometryCraftClient.isometricSize -= (float) vertical * 1.5f;
+            IsometryCraftClient.isometricSize = Math.clamp(IsometryCraftClient.isometricSize, 2.0f, 60.0f);
             ci.cancel();
         }
     }

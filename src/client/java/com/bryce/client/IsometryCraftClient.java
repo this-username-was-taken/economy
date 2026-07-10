@@ -17,7 +17,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
-public class EconomyClient implements ClientModInitializer {
+public class IsometryCraftClient implements ClientModInitializer {
 	public static boolean isIsometric = false;
 
 	public static float targetYaw = 45.0F;
@@ -39,7 +39,7 @@ public class EconomyClient implements ClientModInitializer {
 	private static KeyBinding rotateRightKey;
 	private static CloudRenderMode previousCloudMode;
 
-	private static final File CONFIG_FILE = new File(FabricLoader.getInstance().getConfigDir().toFile(), "economy_client.json");
+	private static final File CONFIG_FILE = new File(FabricLoader.getInstance().getConfigDir().toFile(), "isometrycraft_client.json");
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static boolean firstTick = true;
 
@@ -49,19 +49,19 @@ public class EconomyClient implements ClientModInitializer {
 
 		// Mode toggle key (I)
 		toggleKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-				"key.economy.toggle_iso", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_I, "category.economy.general"
+				"key.isometrycraft.toggle_iso", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_I, "category.isometrycraft.general"
 		));
 		// Y-Axis Lock toggle key (Y)
 		lockYKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-				"key.economy.lock_y", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Y, "category.economy.general"
+				"key.isometrycraft.lock_y", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_Y, "category.isometrycraft.general"
 		));
 		// Rotate Left key (Left Arrow Key)
 		rotateLeftKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-				"key.economy.rotate_left", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT, "category.economy.general"
+				"key.isometrycraft.rotate_left", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT, "category.isometrycraft.general"
 		));
 		// Rotate Right key (Right Arrow Key)
 		rotateRightKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-				"key.economy.rotate_right", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT, "category.economy.general"
+				"key.isometrycraft.rotate_right", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT, "category.isometrycraft.general"
 		));
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -142,7 +142,7 @@ public class EconomyClient implements ClientModInitializer {
 			return;
 		}
 		try (FileReader reader = new FileReader(CONFIG_FILE)) {
-			EconomyConfig config = GSON.fromJson(reader, EconomyConfig.class);
+			IsometryCraftConfig config = GSON.fromJson(reader, IsometryCraftConfig.class);
 			if (config != null) {
 				isIsometric = config.isIsometric;
 				targetYaw = config.targetYaw;
@@ -166,7 +166,7 @@ public class EconomyClient implements ClientModInitializer {
 
 	public static void saveConfig() {
 		try (FileWriter writer = new FileWriter(CONFIG_FILE)) {
-			EconomyConfig config = new EconomyConfig();
+			IsometryCraftConfig config = new IsometryCraftConfig();
 			config.isIsometric = isIsometric;
 			config.targetYaw = targetYaw;
 			config.cameraYaw = cameraYaw;

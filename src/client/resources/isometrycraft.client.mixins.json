@@ -8,6 +8,7 @@
 	"client": [
 		"CameraMixin",
 		"ClientPlayerInteractionManagerMixin",
+		"FrustumMixin",
 		"GameRendererMixin",
 		"InGameHudMixin",
 		"KeyboardInputMixin",

@@ -1,0 +1,7 @@
+{
+  "key.isometrycraft.toggle_iso": "Toggle Isometric Mode",
+  "key.isometrycraft.lock_y": "Toggle Camera Y Lock",
+  "key.isometrycraft.rotate_left": "Rotate 90° (Yaw) Left",
+  "key.isometrycraft.rotate_right": "Rotate 90° (Yaw) Right",
+  "category.isometrycraft.general": "Isometric"
+}

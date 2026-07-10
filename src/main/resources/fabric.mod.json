@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 1,
-	"id": "economy",
+	"id": "isometrycraft",
 	"version": "${version}",
 	"name": "IsometryCraft",
 	"description": "Experience Minecraft from a true isometric perspective.",
@@ -12,23 +12,23 @@
 		"sources": "https://github.com/FabricMC/fabric-example-mod"
 	},
 	"license": "MIT",
-	"icon": "assets/economy/icon.png",
+	"icon": "assets/isometrycraft/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.bryce.Economy"
+			"com.bryce.IsometryCraft"
 		],
 		"client": [
-			"com.bryce.client.EconomyClient"
+			"com.bryce.client.IsometryCraftClient"
 		],
 		"fabric-datagen": [
-			"com.bryce.client.EconomyDataGenerator"
+			"com.bryce.client.IsometryCraftDataGenerator"
 		]
 	},
 	"mixins": [
-		"economy.mixins.json",
+		"isometrycraft.mixins.json",
 		{
-			"config": "economy.client.mixins.json",
+			"config": "isometrycraft.client.mixins.json",
 			"environment": "client"
 		}
 	],

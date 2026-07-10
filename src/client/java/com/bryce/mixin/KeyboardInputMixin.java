@@ -1,6 +1,6 @@
 package com.bryce.mixin;
 
-import com.bryce.client.EconomyClient;
+import com.bryce.client.IsometryCraftClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.KeyboardInput;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,7 +13,7 @@ public class KeyboardInputMixin {
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void correctIsometricMovement(boolean slowDown, float slowDownFactor, CallbackInfo ci) {
-        if (!EconomyClient.isIsometric) {
+        if (!IsometryCraftClient.isIsometric) {
             return;
         }
 
@@ -28,7 +28,7 @@ public class KeyboardInputMixin {
         if (forward == 0 && sideways == 0) return;
 
         float playerYaw = client.player.getYaw();
-        float angleDifference = (EconomyClient.cameraYaw - playerYaw);
+        float angleDifference = (IsometryCraftClient.cameraYaw - playerYaw);
 
         double radians = Math.toRadians(angleDifference);
         double cos = Math.cos(radians);

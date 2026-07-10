@@ -1,7 +1,0 @@
-{
-  "key.economy.toggle_iso": "Toggle Isometric Mode",
-  "key.economy.lock_y": "Toggle Camera Y Lock",
-  "key.economy.rotate_left": "Rotate 90° (Yaw) Left",
-  "key.economy.rotate_right": "Rotate 90° (Yaw) Right",
-  "category.economy.general": "Isometric"
-}

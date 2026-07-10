@@ -1,6 +1,6 @@
 package com.bryce.mixin;
 
-import com.bryce.client.EconomyClient;
+import com.bryce.client.IsometryCraftClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
@@ -30,8 +30,8 @@ public class ClientPlayerInteractionManagerMixin {
     private MinecraftClient client;
 
     @Unique
-    private void economy$lookAt(Vec3d targetPos) {
-        if (!EconomyClient.isIsometric || this.client.player == null) {
+    private void isometrycraft$lookAt(Vec3d targetPos) {
+        if (!IsometryCraftClient.isIsometric || this.client.player == null) {
             return;
         }
         ClientPlayerEntity player = this.client.player;
@@ -53,32 +53,32 @@ public class ClientPlayerInteractionManagerMixin {
     }
 
     @Inject(method = "interactBlock", at = @At("HEAD"))
-    private void economy$onInteractBlock(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
-        this.economy$lookAt(hitResult.getPos());
+    private void isometrycraft$onInteractBlock(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
+        this.isometrycraft$lookAt(hitResult.getPos());
     }
 
     @Inject(method = "interactEntity", at = @At("HEAD"))
-    private void economy$onInteractEntity(PlayerEntity player, Entity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        this.economy$lookAt(entity.getPos());
+    private void isometrycraft$onInteractEntity(PlayerEntity player, Entity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+        this.isometrycraft$lookAt(entity.getPos());
     }
 
     @Inject(method = "attackEntity", at = @At("HEAD"))
-    private void economy$onAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
-        this.economy$lookAt(target.getPos());
+    private void isometrycraft$onAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
+        this.isometrycraft$lookAt(target.getPos());
     }
 
     @Inject(method = "breakBlock", at = @At("HEAD"))
-    private void economy$onBreakBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        this.economy$lookAt(Vec3d.ofCenter(pos));
+    private void isometrycraft$onBreakBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
+        this.isometrycraft$lookAt(Vec3d.ofCenter(pos));
     }
 
     @Inject(method = "attackBlock", at = @At("HEAD"))
-    private void economy$onAttackBlock(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
-        this.economy$lookAt(Vec3d.ofCenter(pos));
+    private void isometrycraft$onAttackBlock(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
+        this.isometrycraft$lookAt(Vec3d.ofCenter(pos));
     }
 
     @Inject(method = "updateBlockBreakingProgress", at = @At("HEAD"))
-    private void economy$onUpdateBlockBreakingProgress(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
-        this.economy$lookAt(Vec3d.ofCenter(pos));
+    private void isometrycraft$onUpdateBlockBreakingProgress(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
+        this.isometrycraft$lookAt(Vec3d.ofCenter(pos));
     }
 }
