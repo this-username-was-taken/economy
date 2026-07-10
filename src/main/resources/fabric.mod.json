@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "economy",
 	"version": "${version}",
-	"name": "",
-	"description": "Experience Minecraft from an isometric perspective.",
+	"name": "IsometryCraft",
+	"description": "Experience Minecraft from a true isometric perspective.",
 	"authors": [
 		"Bryce3345"
 	],
