@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "economy",
+	"version": "${version}",
+	"name": "",
+	"description": "Experience Minecraft from an isometric perspective.",
+	"authors": [
+		"Bryce3345"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/economy/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.bryce.Economy"
+		],
+		"client": [
+			"com.bryce.client.EconomyClient"
+		],
+		"fabric-datagen": [
+			"com.bryce.client.EconomyDataGenerator"
+		]
+	},
+	"mixins": [
+		"economy.mixins.json",
+		{
+			"config": "economy.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.19.2",
+		"minecraft": "~1.21.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	}
+}
