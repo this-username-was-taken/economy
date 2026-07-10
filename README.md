@@ -1,5 +1,4 @@
-# Economy
-
+IsometryCraft
 A Fabric mod that lets you play Minecraft in a true isometric perspective.
 
 ## Features
