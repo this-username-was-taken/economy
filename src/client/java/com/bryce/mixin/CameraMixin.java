@@ -31,7 +31,7 @@ public abstract class CameraMixin {
             this.focusedEntity = focusedEntity;
             this.thirdPerson = true;
             final float yaw = IsometryCraftClient.cameraYaw;
-            final float pitch = 35.264F;
+            final float pitch = IsometryCraftClient.cameraPitch;
             this.setRotation(yaw, pitch);
             double x = MathHelper.lerp(tickDelta, focusedEntity.prevX, focusedEntity.getX());
             double y = IsometryCraftClient.isYLocked

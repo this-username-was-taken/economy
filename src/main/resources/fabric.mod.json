@@ -8,8 +8,8 @@
 		"Bryce3345"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://modrinth.com/mod/isometrycraft",
+		"sources": "https://github.com/this-username-was-taken/IsometryCraft"
 	},
 	"license": "MIT",
 	"icon": "assets/isometrycraft/icon.png",
