@@ -3,6 +3,7 @@ package com.bryce.mixin;
 import com.bryce.client.IsometryCraftClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.KeyboardInput;
+import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,20 +25,15 @@ public class KeyboardInputMixin {
 
         float forward = input.movementForward;
         float sideways = input.movementSideways;
-
         if (forward == 0 && sideways == 0) return;
 
-        float playerYaw = client.player.getYaw();
-        float angleDifference = (IsometryCraftClient.cameraYaw - playerYaw);
-
-        double radians = Math.toRadians(angleDifference);
-        double cos = Math.cos(radians);
-        double sin = Math.sin(radians);
-
-        float correctedSideways = (float) (sideways * cos - forward * sin);
-        float correctedForward = (float) (forward * cos + sideways * sin);
-
-        input.movementSideways = correctedSideways;
-        input.movementForward = correctedForward;
+        float inputAngle = (float) Math.toDegrees(Math.atan2(-sideways, forward));
+        float targetYaw = MathHelper.wrapDegrees(IsometryCraftClient.cameraYaw + inputAngle);
+        client.player.setYaw(targetYaw);
+        client.player.setPitch(0.0f);
+        client.player.headYaw = targetYaw;
+        client.player.bodyYaw = targetYaw;
+        input.movementForward = (float) Math.hypot(forward, sideways);
+        input.movementSideways = 0.0f;
     }
 }

@@ -34,11 +34,6 @@ public class IsometryCraftClient implements ClientModInitializer {
 	public static boolean isYLocked = false;
 	public static double lockedYValue = 70.0;
 
-	// Occlusion variables
-	public static boolean occlusionEnabled = true;
-	public static float occlusionMinRadius = 1.5f;
-	public static float occlusionMaxRadius = 4.5f;
-
 	private static KeyBinding toggleKey;
 	private static KeyBinding lockYKey;
 	private static KeyBinding rotateLeftKey;

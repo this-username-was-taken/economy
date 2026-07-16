@@ -2,9 +2,7 @@
 	"required": true,
 	"package": "com.bryce.mixin",
 	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"ExampleMixin"
-	],
+	"mixins": [],
 	"client": [
 	],
 	"injectors": {
