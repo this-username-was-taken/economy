@@ -10,6 +10,7 @@ import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
 import org.joml.Matrix4f;
@@ -51,7 +52,6 @@ public class GameRendererMixin {
 
     @Inject(method = "updateCrosshairTarget", at = @At("HEAD"), cancellable = true)
     private void isometrycraft$updateTargetedEntity(float tickDelta, CallbackInfo ci) {
-        // ========= SAFETY CHECK =========
         if (!IsometryCraftClient.isIsometric) return;
         if (client == null) return;
         if (client.world == null) return;
@@ -74,9 +74,12 @@ public class GameRendererMixin {
         BlockHitResult blockHit = client.world.raycast(new RaycastContext(rayStart, rayEnd, RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, camEntity));
         double dist = blockHit.getType() != HitResult.Type.MISS ? blockHit.getPos().distanceTo(rayStart) : 150.0;
         Vec3d viewVec = rayDir.multiply(dist);
+
+        Box searchBox = new Box(rayStart, rayStart.add(viewVec)).expand(1.0);
+
         EntityHitResult entityHit = ProjectileUtil.raycast(
                 camEntity, rayStart, rayStart.add(viewVec),
-                camEntity.getBoundingBox().stretch(viewVec).expand(1.0),
+                searchBox,
                 e -> !e.isSpectator() && e.canHit(), dist * dist
         );
 
@@ -89,7 +92,8 @@ public class GameRendererMixin {
     private void isometrycraft$ignoreFovEffects(Camera camera, float tickDelta, boolean changingFov, CallbackInfoReturnable<Double> cir) {
         if (IsometryCraftClient.isIsometric) {
             cir.setReturnValue(Double.valueOf(this.client.options.getFov().getValue()));
-        }}
+        }
+    }
 
     @Inject(method = "bobView", at = @At("HEAD"), cancellable = true)
     private void isometrycraft$disableViewBobbing(MatrixStack matrices, float tickDelta, CallbackInfo ci) {

@@ -11,7 +11,7 @@ public class IsometricHudRenderer implements HudRenderCallback {
 
     @Override
     public void onHudRender(DrawContext drawContext, RenderTickCounter tickCounter) {
-        if (!IsometryCraftClient.isIsometric) return;
+        if (!IsometryCraftClient.isIsometric || !IsometryCraftClient.showHud) return;
 
         MinecraftClient client = MinecraftClient.getInstance();
         if (client == null || client.options.hudHidden || client.player == null) return;
