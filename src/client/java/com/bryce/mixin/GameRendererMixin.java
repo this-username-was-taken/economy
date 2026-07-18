@@ -100,4 +100,11 @@ public class GameRendererMixin {
     private void disableHurtTilt(CallbackInfo ci) {
         if (IsometryCraftClient.isIsometric) ci.cancel();
     }
+
+    @Inject(method = "renderHand", at = @At("HEAD"), cancellable = true)
+    private void hideHand(Camera camera, float tickDelta, Matrix4f positionMatrix, CallbackInfo ci) {
+        if (IsometryCraftClient.isIsometric) {
+            ci.cancel();
+        }
+    }
 }

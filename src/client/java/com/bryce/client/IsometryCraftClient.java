@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.option.CloudRenderMode;
 import net.minecraft.client.option.KeyBinding;
@@ -33,6 +34,7 @@ public class IsometryCraftClient implements ClientModInitializer {
 	public static double lastMouseY = 0.0;
 	public static boolean isYLocked = false;
 	public static double lockedYValue = 70.0;
+	public static boolean showHud = true;
 
 	private static KeyBinding toggleKey;
 	private static KeyBinding lockYKey;
@@ -40,6 +42,7 @@ public class IsometryCraftClient implements ClientModInitializer {
 	private static KeyBinding rotateRightKey;
 	private static KeyBinding pitchUpKey;
 	private static KeyBinding pitchDownKey;
+	private static KeyBinding openConfigKey;
 	private static CloudRenderMode previousCloudMode;
 	private static final File CONFIG_FILE = new File(FabricLoader.getInstance().getConfigDir().toFile(), "isometrycraft_client.json");
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -54,6 +57,11 @@ public class IsometryCraftClient implements ClientModInitializer {
 		rotateRightKey = registerKey("rotate_right", GLFW.GLFW_KEY_RIGHT);
 		pitchUpKey = registerKey("pitch_up", GLFW.GLFW_KEY_UP);
 		pitchDownKey = registerKey("pitch_down", GLFW.GLFW_KEY_DOWN);
+		openConfigKey = registerKey("open_config", GLFW.GLFW_KEY_O);
+
+		// Register HUD overlay rendering callback
+		HudRenderCallback.EVENT.register(new IsometricHudRenderer());
+
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			if (firstTick) {
 				firstTick = false;
@@ -70,6 +78,10 @@ public class IsometryCraftClient implements ClientModInitializer {
 				prevCameraPitch = cameraPitch;
 				float deltaPitch = targetPitch - cameraPitch;
 				cameraPitch = Math.abs(deltaPitch) > 0.01F ? cameraPitch + deltaPitch * 0.25F : targetPitch;
+			}
+
+			while (openConfigKey.wasPressed()) {
+				client.setScreen(new IsometryCraftConfigScreen(client.currentScreen));
 			}
 
 			while (toggleKey.wasPressed()) {
@@ -143,6 +155,7 @@ public class IsometryCraftClient implements ClientModInitializer {
 				isometricSize = config.isometricSize;
 				isYLocked = config.isYLocked;
 				lockedYValue = config.lockedYValue;
+				showHud = config.showHud;
 				try {
 					previousCloudMode = config.previousCloudMode != null ? CloudRenderMode.valueOf(config.previousCloudMode) : CloudRenderMode.FANCY;
 				} catch (IllegalArgumentException e) {
@@ -168,6 +181,7 @@ public class IsometryCraftClient implements ClientModInitializer {
 			config.isometricSize = isometricSize;
 			config.isYLocked = isYLocked;
 			config.lockedYValue = lockedYValue;
+			config.showHud = showHud;
 			config.previousCloudMode = previousCloudMode != null ? previousCloudMode.name() : "FANCY";
 			GSON.toJson(config, writer);
 		} catch (Exception e) {

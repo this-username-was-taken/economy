@@ -13,4 +13,5 @@ public class IsometryCraftConfig {
     public boolean isYLocked = false;
     public double lockedYValue = 70.0;
     public String previousCloudMode = "FANCY";
+    public boolean showHud = true;
 }
